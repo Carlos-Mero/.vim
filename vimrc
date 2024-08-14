@@ -2,6 +2,7 @@ set nocompatible
 set hls ic
 set number
 set cursorline
+set smoothscrool
 set linebreak
 set smartindent
 set smartcase
@@ -43,6 +44,8 @@ set statusline +=%1*%4v\ %*             "virtual column number
 set statusline +=%2*0x%04B\ %*          "character under cursor
 au TerminalWinOpen * setlocal nonumber
 
+syntax off
+
 "let g:loaded_matchparen = 1
 let g:loaded_netrw = 1
 let g:loaded_netrwPlugin = 1
@@ -52,6 +55,8 @@ let g:csv_hiGroup = "IncSearch"
 let g:csv_hiHeader = 'Function'
 let g:godot_executable = '/Applications/Godot.app'
 let g:python_highlight_all = 1
+let g:floaterm_opener = "tabe"
+let g:typst_syntax_highlight = 0
 "autocmd FileType clap_input let g:completion_enable_auto_pop = 0
 "let g:clap_plugin_experimental = v:true
 "let g:clap_layout = { 'relative': 'editor' }
@@ -69,7 +74,7 @@ call plug#begin('~/.vim/plugged')
   Plug 'yegappan/lsp'
   Plug 'girishji/autosuggest.vim'
   Plug 'girishji/vimcomplete'
-  "Plug 'liuchengxu/vim-clap', { 'do': { -> clap#installer#force_download() } }
+  "Plug 'voldikss/vim-floaterm'
 call plug#end()
 
 nnoremap <leader>w <Cmd>TypstWatch<CR>
@@ -78,6 +83,7 @@ nnoremap <leader>s :MarkdownPreviewStop<CR>
 nnoremap <leader>/ :nohl<CR>
 nnoremap <leader>x :bd<CR>
 nnoremap <M-x> :bd!<CR>
+nnoremap <leader>n :FloatermNew nnn<CR>
 noremap <SPACE>h <C-W>h
 noremap <C-h> <C-W>h
 noremap <SPACE>j <C-W>j
@@ -152,8 +158,9 @@ hi User4 guifg=#a0ee40 guibg=#333536
 hi User5 guifg=#eeee40 guibg=#333536
 
 if has("gui_running")
-  nmap <silent> <ForceClick> :LspGotoDefinition<CR>
-  nnoremap <C-z> :terminal<CR>
+  nmap <silent> <ForceClick> :LspPeekDefinition<CR>
+  "let g:floaterm_keymap_toggle = '<C-z>'
+  nnoremap <C-z> :term<CR>
   set guioptions-=l
   set guioptions-=L
   set guioptions-=r
@@ -252,7 +259,7 @@ let lspServers = [#{
     \  #{
     \   name: 'tinymist',
     \   filetype: 'typst',
-    \   path: '/Users/huangyanxing/.cargo/bin/tinymist',
+    \   path: '/opt/homebrew/bin/tinymist',
     \   args: ['lsp']
     \ },
     \  #{
